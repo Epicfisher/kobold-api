@@ -86,7 +86,7 @@ See the supplied `Demo.py` for an example implementation
 | No Returns |
 |------------|
 
-```Generates Text from the AI using a given Input Text. Get the Output using controller.GetOutput()```
+```Generates Text from the AI using a given Input Text. Calls "controller.GetOutput()" Afterwars```
 
 ## controller.GetOutput()
 
