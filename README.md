@@ -7,11 +7,6 @@ A Work-In-Progress Python Module for Interfacing with [KoboldAI](https://github.
 * Sends & Receives Text from the AI
 ```
 
-## Missing Features
-```
-Empty List as of Now
-```
-
 ## Setup
 ### Install Requirements
 To install requirements, you can install directly from the requirements.txt file
