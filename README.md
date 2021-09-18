@@ -1,5 +1,5 @@
 # KoboldAPI
-A Work-In-Progress Python Module for Interfacing with KoboldAI's Console API.
+A Work-In-Progress Python Module for Interfacing with [KoboldAI](https://github.com/KoboldAI/KoboldAI-Client)'s Console API.
 
 ## Features
 ```
