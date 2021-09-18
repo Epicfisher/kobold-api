@@ -78,14 +78,14 @@ See the supplied `Demo.py` for an example implementation
 ## controller.Generate(textin)
 
 ### Arguments
-| Type   | Name   | Description                           |
-|--------|--------|---------------------------------------|
-| STRING | textin | The Input Text to Generate Text After |
+| Type   | Name     | Description                           |
+|--------|----------|---------------------------------------|
+| STRING | `textin` | The Input Text to Generate Text After |
 
 ### Returns
-| Type   | Name   | Description              |
-|--------|--------|--------------------------|
-| STRING | output | The Newly Generated Text |
+| Type   | Name     | Description              |
+|--------|----------|--------------------------|
+| STRING | `output` | The Newly Generated Text |
 
 ```Generates Text from the AI using a given Input Text. Calls "controller.GetOutput()" Afterwards```
 
@@ -96,8 +96,8 @@ See the supplied `Demo.py` for an example implementation
 |--------------|
 
 ### Returns
-| Type   | Name   | Description              |
-|--------|--------|--------------------------|
-| STRING | output | The Newly Generated Text |
+| Type   | Name     | Description              |
+|--------|----------|--------------------------|
+| STRING | `output` | The Newly Generated Text |
 
 ```Gets the Output of the last Generate()```
