@@ -12,7 +12,7 @@ class Controller:
     cleaner = re.compile('<.*?>')
     
     # Settings
-    debug = True
+    debug = False
     url = ""
     reset_after_input = False
 
@@ -75,11 +75,13 @@ class Controller:
 
     def Initialise(self, _url, _debug=False, _reset_after_input=False):
         global url
+        global debug
+        global reset_after_input
         global driver
         
         url = _url
         debug = _debug
-        reset_after_completion = _reset_after_completion
+        reset_after_input = _reset_after_input
 
         try:
             # Check Connection to URL

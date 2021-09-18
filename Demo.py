@@ -1,20 +1,21 @@
 import koboldapi
 
 url = input("KoboldAI URL to Connect to: ")
-print("Connecting...", end = "\r")
+print("\nConnecting...", end="\r")
 #if not url.startswith("http://"):
     #url = "http://" + url
 #if not url.endswith(".com"):
     #url = url + ".com"
 
 controller = koboldapi.Controller()
-controller.Initialise(url, debug=False, reset_after_input=False)
+controller.Initialise(url, _debug=False, _reset_after_input=False)
 
 # Exit Demo if there was an Error Connecting
 if controller.closed:
     exit()
 
-print("             \nKoboldAPI Demo Connected!\n\nDemo Commands:" +
+print("             ", end="\r")
+print("KoboldAPI Demo Connected!\n\nDemo Commands:" +
       "\n'restart' = Restart Story" +
       "\n'close' = Close Chrome Webdriver & Exit" +
       "\n")
@@ -31,7 +32,7 @@ while True:
         print("\nStory has been Reset!\n")
         handledCommand = True
     if textin == "quit" or textin == "close" or textin == "exit":
-        print("\nClosing...")
+        print("\nClosing...", end="")
         controller.Close()
         exit()
 
