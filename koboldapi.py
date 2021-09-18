@@ -73,11 +73,13 @@ class Controller:
                         pass
             time.sleep(1)
 
-    def Initialise(self, _url, debug=False, reset_after_input=False):
+    def Initialise(self, _url, _debug=False, _reset_after_input=False):
         global url
         global driver
         
         url = _url
+        debug = _debug
+        reset_after_completion = _reset_after_completion
 
         try:
             # Check Connection to URL
