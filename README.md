@@ -66,18 +66,6 @@ See the supplied `Demo.py` for an example implementation
 
 ```Closes & Cleans Up the API + the Chrome WebDriver```
 
-## controller.ResetStory()
-
-### Arguments
-| No Arguments |
-|--------------|
-
-### Returns
-| No Returns |
-|------------|
-
-```Clears the AIs Memory of the Current Text```
-
 ## controller.Generate(textin)
 
 ### Arguments
@@ -104,3 +92,15 @@ See the supplied `Demo.py` for an example implementation
 | STRING | `output` | The Newly Generated Text |
 
 ```Gets the Output of the last Generate()```
+
+## controller.ResetStory()
+
+### Arguments
+| No Arguments |
+|--------------|
+
+### Returns
+| No Returns |
+|------------|
+
+```Clears the AIs Memory of the Current Text```
