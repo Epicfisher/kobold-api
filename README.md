@@ -34,11 +34,13 @@ See the supplied `Demo.py` for an example implementation
 
 ---
 
-# API Functions
+# API Classes
 
 ## koboldapi.Controller()
 
 ```Class that Controls the API```
+
+# API Functions
 
 ## controller.Initialise(_url, _debug=False, _reset_after_input=False)
 
