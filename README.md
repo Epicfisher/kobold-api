@@ -83,10 +83,11 @@ See the supplied `Demo.py` for an example implementation
 | STRING | textin | The Input Text to Generate Text After |
 
 ### Returns
-| No Returns |
-|------------|
+| Type   | Name   | Description              |
+|--------|--------|--------------------------|
+| STRING | output | The Newly Generated Text |
 
-```Generates Text from the AI using a given Input Text. Calls "controller.GetOutput()" Afterwars```
+```Generates Text from the AI using a given Input Text. Calls "controller.GetOutput()" Afterwards```
 
 ## controller.GetOutput()
 
