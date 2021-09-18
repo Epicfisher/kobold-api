@@ -36,7 +36,7 @@ See the supplied `Demo.py` for an example implementation
 
 # API Functions
 
-## controller.Initialise(_url, _debug = False, _reset_after_input = False)
+## controller.Initialise(_url, _debug=False, _reset_after_input=False)
 
 ### Arguments
 | Type   | Name                         | Description                                                                  |
