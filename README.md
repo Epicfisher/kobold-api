@@ -54,10 +54,11 @@ See the supplied `Demo.py` for an example implementation
 | BOOL   | `_reset_after_input` = False | Whether or not to Clear the AI's Memory of the Current Text after each Input |
 
 ### Returns
-| No Returns |
-|------------|
+| Type | Name               | Description                                                                                  |
+|------|--------------------|----------------------------------------------------------------------------------------------|
+| BOOL | *No Variable Name* | Success Boolean. Returns True on Initialisation Success, and False on Initialisation Failure |
 
-```Initialises and Connects the API to KoboldAI```
+```Initialises and Connects the API to KoboldAI. Returns True on Success, False on Failure```
 
 ## controller.Close()
 

@@ -100,9 +100,8 @@ class Controller:
         try:
             # Check Connection to URL
             if requests.get(url).status_code != 200:
-                print("KOBOLDAPI ERROR: URL is not Reachable! Closing...")
-                self.Close()
-                return
+                print("KOBOLDAPI ERROR: URL is not Reachable! Halting...")
+                return False
 
             # Initialise Console-Compatible Silent WebDriver
             d = DesiredCapabilities.CHROME
@@ -124,12 +123,13 @@ class Controller:
             # Create New Game
             self.ResetStory()
         except:
-            print("KOBOLDAPI ERROR: URL is not Reachable! Closing...")
-            self.Close()
-            return
+            print("KOBOLDAPI ERROR: URL is not Reachable! Halting...")
+            return False
 
         if debug:
             print("DEBUG: KoboldAPI Ready!")
+
+        return True
 
     def Generate(self, textin, new_only=False):
         global firstChunk

@@ -4,10 +4,10 @@ url = input("KoboldAI URL to Connect to: ")
 print("\nConnecting...", end="\r")
 
 controller = koboldapi.Controller()
-controller.Initialise(url, _debug=False, _reset_after_input=False)
+initresult = controller.Initialise(url, _debug=False, _reset_after_input=False)
 
 # Exit Demo if there was an Error Connecting
-if controller.closed:
+if initresult == False:
     exit()
 
 print("             ", end="\r")
