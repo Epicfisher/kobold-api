@@ -10,6 +10,11 @@ To test this for Free (with certain restrictions) you can use [Google Colab.](ht
 ```
 
 ## Setup
+
+### Chrome WebDriver
+
+Download the [Chrome WebDriver](https://chromedriver.chromium.org/downloads) and place it in a location accessible by your PATH.
+
 ### Install Requirements
 To install requirements, you can install directly from the requirements.txt file
 #### Linux
@@ -66,12 +71,13 @@ See the supplied `Demo.py` for an example implementation
 
 ```Closes & Cleans Up the API + the Chrome WebDriver```
 
-## controller.Generate(textin)
+## controller.Generate(textin, new_only=False)
 
 ### Arguments
-| Type   | Name     | Description                           |
-|--------|----------|---------------------------------------|
-| STRING | `textin` | The Input Text to Generate Text After |
+| Type   | Name               | Description                           |
+|--------|--------------------|---------------------------------------|
+| STRING | `textin`           | The Input Text to Generate Text After |
+| BOOL   | `new_only` = False | Only return Newly Generated Text      |
 
 ### Returns
 | Type   | Name     | Description              |

@@ -2,10 +2,6 @@ import koboldapi
 
 url = input("KoboldAI URL to Connect to: ")
 print("\nConnecting...", end="\r")
-#if not url.startswith("http://"):
-    #url = "http://" + url
-#if not url.endswith(".com"):
-    #url = url + ".com"
 
 controller = koboldapi.Controller()
 controller.Initialise(url, _debug=False, _reset_after_input=False)
@@ -31,6 +27,14 @@ while True:
         controller.ResetStory()
         print("\nStory has been Reset!\n")
         handledCommand = True
+    '''if textin == "retry" or textin == "redo":
+        print("Generating...", end="\r")
+        # Receive Retried Output
+        output = controller.Retry()
+        # Display Retried Output
+        print("             ", end="\r")
+        print("Output:\n\n" + output + "\n")
+        handledCommand = True'''
     if textin == "quit" or textin == "close" or textin == "exit":
         print("\nClosing...", end="")
         controller.Close()

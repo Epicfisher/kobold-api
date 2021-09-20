@@ -33,6 +33,11 @@ class Controller:
         self.closed = True
 
         try:
+            driver.close()
+        except:
+            pass
+
+        try:
             driver.quit()
         except:
             pass
@@ -49,6 +54,15 @@ class Controller:
         driver.execute_script("api_instance.send({'cmd': 'newgame', 'data': ''});")
         driver.execute_script("console.clear();")
 
+    '''def Retry(self):
+        
+        driver.execute_script("api_instance.send({'cmd': 'retry', 'data': ''});")
+        output = self.GetOutput().encode().decode("unicode-escape")
+        self.lastOutput = output
+        if not output.endswith("\n") and not output.endswith(" "):
+            self.addSpaceBefore = True
+        return output'''
+
     def GetOutput(self):
         global driver
         global firstChunk
@@ -64,8 +78,8 @@ class Controller:
                         starting_chunk = output[:output.index('<')]
                         if self.debug:
                             print("KOBOLDAPI DEBUG: " + output)
-                            print("KOBOLDAPI DEBUG: " + self.firstChunk + " | " + starting_chunk)
-                        if self.firstChunk == starting_chunk.replace('\n', '\\n'):
+                            print("KOBOLDAPI DEBUG: " + self.firstChunk.replace('\n', '\\n') + " | " + starting_chunk.replace('\n', '\\n'))
+                        if self.firstChunk.replace('\n', '\\n') == starting_chunk.replace('\n', '\\n'):
                             output = output[:output.rindex('</chunk>')]
                             output = re.sub(self.cleaner, '', output)
                             return output
@@ -78,7 +92,7 @@ class Controller:
         global debug
         global reset_after_input
         global driver
-        
+
         url = _url
         debug = _debug
         reset_after_input = _reset_after_input
@@ -88,6 +102,7 @@ class Controller:
             if requests.get(url).status_code != 200:
                 print("KOBOLDAPI ERROR: URL is not Reachable! Closing...")
                 self.Close()
+                return
 
             # Initialise Console-Compatible Silent WebDriver
             d = DesiredCapabilities.CHROME
@@ -111,11 +126,12 @@ class Controller:
         except:
             print("KOBOLDAPI ERROR: URL is not Reachable! Closing...")
             self.Close()
+            return
 
         if debug:
             print("DEBUG: KoboldAPI Ready!")
 
-    def Generate(self, textin):
+    def Generate(self, textin, new_only=False):
         global firstChunk
         global addSpaceBefore
         global lastOutput
@@ -126,8 +142,11 @@ class Controller:
         if self.chunks == 0:
             self.firstChunk = textin
 
-        driver.execute_script("api_instance.send({'cmd': 'submit', 'data': '" + textin.replace("'", "\\'") + "'});")
+        if self.debug:
+            print("KOBOLDAPI DEBUG: JavaScript Console CMD: " + "api_instance.send({'cmd': 'submit', 'data': '" + textin.replace("'", "\\'").replace("\n", "\\n") + "'});")
+        driver.execute_script("api_instance.send({'cmd': 'submit', 'data': '" + textin.replace("'", "\\'").replace("\n", "\\n") + "'});")
         #if self.chunks == 0:
+            #driver.execute_script("console.clear();")
             #self.ResetStory()
         output = self.GetOutput().encode().decode("unicode-escape")
         self.lastOutput = output
@@ -136,4 +155,6 @@ class Controller:
         self.chunks+=1
         if self.reset_after_input:
             self.ResetStory()
+        if new_only:
+            output = output[len(textin):]
         return output
