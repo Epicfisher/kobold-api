@@ -56,7 +56,7 @@ See the supplied `Demo.py` for an example implementation
 ### Returns
 | Type | Name               | Description                                                                                  |
 |------|--------------------|----------------------------------------------------------------------------------------------|
-| BOOL | *No Variable Name* | Success Boolean. Returns True on Initialisation Success, and False on Initialisation Failure |
+| BOOL | *No Name* | Success Boolean. Returns True on Initialisation Success, and False on Initialisation Failure |
 
 ```Initialises and Connects the API to KoboldAI. Returns True on Success, False on Failure```
 
@@ -85,7 +85,7 @@ See the supplied `Demo.py` for an example implementation
 |--------|----------|--------------------------|
 | STRING | `output` | The Newly Generated Text |
 
-```Generates Text from the AI using a given Input Text. Calls "controller.GetOutput()" Afterwards```
+```Generates Text from the AI using a given Input Text, and returns the Generated Output Text. Calls "controller.GetOutput()" Afterwards```
 
 ## controller.GetOutput()
 
@@ -98,7 +98,7 @@ See the supplied `Demo.py` for an example implementation
 |--------|----------|--------------------------|
 | STRING | `output` | The Newly Generated Text |
 
-```Gets the Output of the last Generate()```
+```Gets the Output of the last "controller.Generate()"```
 
 ## controller.ResetStory()
 
