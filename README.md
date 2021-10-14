@@ -11,10 +11,6 @@ To test this for Free (with certain restrictions) you can use [Google Colab.](ht
 
 ## Setup
 
-### Chrome WebDriver
-
-Download the [Chrome WebDriver](https://chromedriver.chromium.org/downloads) and place it in a location accessible by your PATH.
-
 ### Install Requirements
 To install requirements, you can install directly from the requirements.txt file
 #### Linux
@@ -40,11 +36,17 @@ See the supplied `Demo.py` for an example implementation
 
 ## koboldapi.Controller()
 
-```Class that Controls the API```
+### Description
+
+Class that Controls the API
 
 # API Functions
 
 ## controller.Initialise(_url, _debug=False, _reset_after_input=False)
+
+### Description
+
+Initialises and Connects the API to KoboldAI. Returns True on Success, False on Failure
 
 ### Arguments
 | Type   | Name                         | Description                                                                  |
@@ -58,9 +60,11 @@ See the supplied `Demo.py` for an example implementation
 |------|--------------------|----------------------------------------------------------------------------------------------|
 | BOOL | *No Name* | Success Boolean. Returns True on Initialisation Success, and False on Initialisation Failure |
 
-```Initialises and Connects the API to KoboldAI. Returns True on Success, False on Failure```
-
 ## controller.Close()
+
+### Description
+
+Closes & Cleans Up the API
 
 ### Arguments
 | No Arguments |
@@ -70,9 +74,11 @@ See the supplied `Demo.py` for an example implementation
 | No Returns |
 |------------|
 
-```Closes & Cleans Up the API + the Chrome WebDriver```
-
 ## controller.Generate(textin, new_only=False)
+
+### Description
+
+Generates Text from the AI using a given Input Text, and returns the Generated Output Text
 
 ### Arguments
 | Type   | Name               | Description                           |
@@ -85,22 +91,11 @@ See the supplied `Demo.py` for an example implementation
 |--------|----------|--------------------------|
 | STRING | `output` | The Newly Generated Text |
 
-```Generates Text from the AI using a given Input Text, and returns the Generated Output Text. Calls "controller.GetOutput()" Afterwards```
-
 ## controller.GetOutput()
 
-### Arguments
-| No Arguments |
-|--------------|
+### Description
 
-### Returns
-| Type   | Name     | Description              |
-|--------|----------|--------------------------|
-| STRING | `output` | The Newly Generated Text |
-
-```Gets the Output of the last "controller.Generate()"```
-
-## controller.ResetStory()
+Keeps Connection Alive and Handles Incoming Commands
 
 ### Arguments
 | No Arguments |
@@ -110,4 +105,16 @@ See the supplied `Demo.py` for an example implementation
 | No Returns |
 |------------|
 
-```Clears the AIs Memory of the Current Text```
+## controller.ResetStory()
+
+### Description
+
+Clears the AI's Memory of the Current Text
+
+### Arguments
+| No Arguments |
+|--------------|
+
+### Returns
+| No Returns |
+|------------|

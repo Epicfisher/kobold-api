@@ -13,14 +13,14 @@ if initresult == False:
 print("             ", end="\r")
 print("KoboldAPI Demo Connected!\n\nDemo Commands:" +
       "\n'restart' = Restart Story" +
-      "\n'close' = Close Chrome Webdriver & Exit" +
+      "\n'close' = Close & Exit" +
       "\n")
 
 while True:
     handledCommand = False
     
     # Take Input
-    textin = input("[Chunk " + str(controller.chunks+1) + "]\nInput: ")
+    textin = input("[Input " + str(controller.inputs+1) + "]\nInput: ")
 
     # Handle Special Commands
     if textin == "restart" or textin == "reset" or textin == "clear" or textin == "cls" or textin == "clr":
@@ -37,7 +37,6 @@ while True:
         handledCommand = True'''
     if textin == "quit" or textin == "close" or textin == "exit":
         print("\nClosing...", end="")
-        controller.Close()
         exit()
 
     # If it's not a Special Command...

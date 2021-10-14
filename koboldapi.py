@@ -3,9 +3,6 @@ import html
 import re
 import time
 import requests
-from selenium import webdriver
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.chrome.options import Options
 
 class Controller:
     # Define HTML-Tag-Clearing Regex
@@ -14,45 +11,29 @@ class Controller:
     # Settings
     debug = False
     url = ""
+    sid = ""
     reset_after_input = False
 
     # Runtime Variables
-    closed = False
-    driver = ""
-    firstChunk = ""
-    chunks = 0
-    lastTimestamp = ""
+    chunks = []
+    inputs = 0
+    ready = False
     addSpaceBefore = False
-    lastOutput = ""
 
     # Functions
-    def Close(self):
-        global driver
-        global closed
-
-        self.closed = True
-
-        try:
-            driver.close()
-        except:
-            pass
-
-        try:
-            driver.quit()
-        except:
-            pass
-
     def ResetStory(self):
         global firstChunk
         global chunks
+        global inputs
         global addSpaceBefore
+        global ready
         
-        self.firstChunk = ""
-        self.chunks = 0
+        self.chunks = []
+        self.inputs = 0
         self.addSpaceBefore = False
+        self.ready = False
 
-        driver.execute_script("api_instance.send({'cmd': 'newgame', 'data': ''});")
-        driver.execute_script("console.clear();")
+        r = requests.post(self.url, data='42["message",{"cmd":"newgame","data":""}]')
 
     '''def Retry(self):
         
@@ -64,12 +45,47 @@ class Controller:
         return output'''
 
     def GetOutput(self):
-        global driver
+        global ready
+        
+        if self.debug:
+            print("KOBOLDAPI DEBUG: Started Output Loop Thread Successfully!")
+
+        while True:
+            r = requests.get(self.url) # Request Data
+            output = str(r.content) # Get Output
+            if not output == "b'2'": # Ignore Keep-Alive Acknowledgement Outputs
+                if self.debug:
+                    print("KOBOLDAPI DEBUG: Received Initial Output: '" + output + "'")
+                #while 'cmd' in output:
+                output = output[output.index('"cmd":"')+7:]
+                cmd = output[:output.index('"')]
+                #if cmd == 'connected':
+                    #break
+                if (cmd == 'updatescreen' or cmd == 'updatechunk') and not 'generating story' in output:
+                    while '<chunk' in output:
+                        output = output[output.index('<chunk')+6:]
+                        output = output[output.index('>')+1:]
+                        chunk = output[:output.index('</chunk>')]
+                        chunk = html.unescape(chunk)
+                        chunk = chunk.replace('<br/>', '\n')
+                        self.chunks.append(chunk)
+                    self.ready = True
+                    if self.debug:
+                        print("KOBOLDAPI DEBUG: Ready with New Chunks!")
+            r = requests.post(self.url, data="3") # Keep-Alive Request
+
+    '''
+    def GetOutputOld(self):
         global firstChunk
+
+        valid_responses = 0
 
         while True:
             for entry in driver.get_log('browser'):
-                output = str(entry).replace('\\u005c', '\\u005c\\u005c')
+                output = str(entry)
+                if self.debug:
+                    print("KOBOLDAPI DEBUG: Received Initial Console Output: '" + output + "'")
+                output = output.replace('\\u005c', '\\u005c\\u005c')
                 output = str(output).encode().decode("unicode-escape")
                 if 'chunk' in output:
                     try:
@@ -77,84 +93,109 @@ class Controller:
                         output = output.replace('<br/>', '\n')
                         starting_chunk = output[:output.index('<')]
                         if self.debug:
-                            print("KOBOLDAPI DEBUG: " + output)
-                            print("KOBOLDAPI DEBUG: " + self.firstChunk.replace('\n', '\\n') + " | " + starting_chunk.replace('\n', '\\n'))
+                            print("KOBOLDAPI DEBUG: '" + output + "'")
+                            print("KOBOLDAPI DEBUG: '" + self.firstChunk.replace('\n', '\\n') + " | " + starting_chunk.replace('\n', '\\n') + "'")
                         if self.firstChunk.replace('\n', '\\n') == starting_chunk.replace('\n', '\\n'):
                             output = output[:output.rindex('</chunk>')]
                             output = re.sub(self.cleaner, '', output)
+                            valid_responses += 1
+                            #if valid_responses == 2:
                             return output
                     except:
                         pass
             time.sleep(1)
+    '''
 
     def Initialise(self, _url, _debug=False, _reset_after_input=False):
         global url
         global debug
         global reset_after_input
-        global driver
+        global sid
 
-        url = _url
-        debug = _debug
-        reset_after_input = _reset_after_input
+        self.url = _url
+        self.debug = _debug
+        self.reset_after_input = _reset_after_input
+
+        if self.debug:
+            print("KOBOLDAPI DEBUG: Debug Mode is Enabled!")
 
         try:
             # Check Connection to URL
-            if requests.get(url).status_code != 200:
+            if requests.get(self.url).status_code != 200:
                 print("KOBOLDAPI ERROR: URL is not Reachable! Halting...")
                 return False
-
-            # Initialise Console-Compatible Silent WebDriver
-            d = DesiredCapabilities.CHROME
-            d['goog:loggingPrefs'] = { 'browser':'ALL' }
-            o = Options()
-            o.headless = True
-            o.add_experimental_option("excludeSwitches", ["enable-logging"])
-            driver = webdriver.Chrome(options=o, desired_capabilities=d)
-
-            # Connect to KoboldAI Web Interface
-            driver.get(url)
-
-            # Create API Instance WebSocket
-            driver.execute_script("api_instance = io.connect(loc.href);")
-
-            # Create Event for Receiving Text Data
-            driver.execute_script("api_instance.on('from_server', function(msg) {if(msg.cmd == 'updatescreen') {console.log(msg.data);}});")
-
-            # Create New Game
-            self.ResetStory()
         except:
             print("KOBOLDAPI ERROR: URL is not Reachable! Halting...")
             return False
 
-        if debug:
-            print("DEBUG: KoboldAPI Ready!")
+        if self.debug:
+            print("KOBOLDAPI DEBUG: KoboldAPI Ready!")
+
+        # Point URL to API Endpoint
+        if self.url.endswith("#"):
+            self.url = self.url[:-1]
+        if not self.url.endswith("/"):
+            self.url = self.url + "/"
+        self.url = self.url + "socket.io/?EIO=4&transport=polling&t=0"
+
+        # Get API Key
+        r = requests.get(self.url)
+
+        self.sid = str(r.content)
+        self.sid = self.sid[self.sid.index('"sid":')+7:]
+        self.sid = self.sid[:self.sid.index('"')]
+        
+        self.url = self.url + "&sid=" + self.sid
+
+        # Connect to API
+        r = requests.post(self.url, data="40")
+
+        # Create New Game
+        self.ResetStory()
+
+        # Begin Output Loop Thread
+        t = threading.Thread(target=self.GetOutput)
+        t.daemon = True
+        t.start()
 
         return True
 
     def Generate(self, textin, new_only=False):
-        global firstChunk
         global addSpaceBefore
-        global lastOutput
+        global ready
+        global inputs
 
         if self.addSpaceBefore:
             textin = " " + textin
 
-        if self.chunks == 0:
-            self.firstChunk = textin
-
+        #textin.replace("'", "\\'")
+        gen_cmd = '42["message",{"cmd":"submit","actionmode":0,"data":"' + textin.replace('"', '\\"').replace("\n", "\\n") + '"}]'
         if self.debug:
-            print("KOBOLDAPI DEBUG: JavaScript Console CMD: " + "api_instance.send({'cmd': 'submit', 'data': '" + textin.replace("'", "\\'").replace("\n", "\\n") + "'});")
-        driver.execute_script("api_instance.send({'cmd': 'submit', 'data': '" + textin.replace("'", "\\'").replace("\n", "\\n") + "'});")
-        #if self.chunks == 0:
-            #driver.execute_script("console.clear();")
-            #self.ResetStory()
-        output = self.GetOutput().encode().decode("unicode-escape")
-        self.lastOutput = output
+            print("KOBOLDAPI DEBUG: URL: " + self.url + " Payload: " + gen_cmd)
+
+        r = requests.post(self.url, data=gen_cmd)
+
+        output = ""
+        if len(self.chunks) > 0:
+            self.chunks.append(textin.replace("\\n", "\n"))
+        while True:
+            if self.ready == True:
+                for chunk in self.chunks:
+                    output = output + chunk
+                self.ready = False
+                break
+        #output = self.GetOutput().encode().decode("unicode-escape")
+        #output = ""
+        
         if not output.endswith("\n") and not output.endswith(" "):
             self.addSpaceBefore = True
-        self.chunks+=1
+
         if self.reset_after_input:
             self.ResetStory()
+
         if new_only:
-            output = output[len(textin):]
+            output = textin.replace("\\n", "\n") + self.chunks[len(self.chunks)]
+
+        self.inputs = self.inputs + 1
+
         return output
