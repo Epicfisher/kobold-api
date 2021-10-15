@@ -35,6 +35,10 @@ class Controller:
 
         r = requests.post(self.url, data='42["message",{"cmd":"newgame","data":""}]')
 
+    def SetMemory(self, memory):
+        r = requests.post(self.url, data='42["message",{"cmd":"memory","data":""}]')
+        r = requests.post(self.url, data='42["message",{"cmd":"submit","actionmode":0,"data":"' + memory + '"}]')
+
     '''def Retry(self):
         
         driver.execute_script("api_instance.send({'cmd': 'retry', 'data': ''});")

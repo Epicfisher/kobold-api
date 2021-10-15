@@ -91,11 +91,11 @@ Generates Text from the AI using a given Input Text, and returns the Generated O
 |--------|----------|--------------------------|
 | STRING | `output` | The Newly Generated Text |
 
-## controller.GetOutput()
+## controller.ResetStory()
 
 ### Description
 
-Keeps Connection Alive and Handles Incoming Commands
+Clears the AI's Memory of the Current Text
 
 ### Arguments
 | No Arguments |
@@ -105,11 +105,26 @@ Keeps Connection Alive and Handles Incoming Commands
 | No Returns |
 |------------|
 
-## controller.ResetStory()
+## controller.SetMemory()
 
 ### Description
 
-Clears the AI's Memory of the Current Text
+Set the AI's Memory to the Given Text
+
+### Arguments
+| Type   | Name     | Description                              |
+|--------|----------|------------------------------------------|
+| STRING | `memory` | The Input Text to Set the AI's Memory to |
+
+### Returns
+| No Returns |
+|------------|
+
+## controller.GetOutput()
+
+### Description
+
+Keeps Connection Alive and Handles Incoming Commands
 
 ### Arguments
 | No Arguments |

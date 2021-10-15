@@ -14,6 +14,7 @@ print("             ", end="\r")
 print("KoboldAPI Demo Connected!\n\nDemo Commands:" +
       "\n'restart' = Restart Story" +
       "\n'close' = Close & Exit" +
+      "\n'memory' = Edit Memory" +
       "\n")
 
 while True:
@@ -26,6 +27,11 @@ while True:
     if textin == "restart" or textin == "reset" or textin == "clear" or textin == "cls" or textin == "clr":
         controller.ResetStory()
         print("\nStory has been Reset!\n")
+        handledCommand = True
+    if textin == "memory":
+        memory = input("Set Memory to: ")
+        controller.SetMemory(memory)
+        print("\nMemory has been Set!\n")
         handledCommand = True
     '''if textin == "retry" or textin == "redo":
         print("Generating...", end="\r")
