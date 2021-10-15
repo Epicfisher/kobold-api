@@ -87,9 +87,24 @@ Generates Text from the AI using a given Input Text, and returns the Generated O
 | BOOL   | `new_only` = False | Only return Newly Generated Text      |
 
 ### Returns
-| Type   | Name     | Description              |
-|--------|----------|--------------------------|
-| STRING | `output` | The Newly Generated Text |
+| Type   | Name      | Description        |
+|--------|-----------|--------------------|
+| STRING | *No Name* | The Generated Text |
+
+## controller.GetOutput()
+
+### Description
+
+Gets the Text Output from the AI
+
+### Arguments
+| No Arguments |
+|--------------|
+
+### Returns
+| Type   | Name     | Description        |
+|--------|----------|--------------------|
+| STRING | `output` | The Generated Text |
 
 ## controller.ResetStory()
 
@@ -120,11 +135,26 @@ Set the AI's Memory to the Given Text
 | No Returns |
 |------------|
 
-## controller.GetOutput()
+## controller.Retry()
 
 ### Description
 
-Keeps Connection Alive and Handles Incoming Commands
+Tells the AI to Retry it's Last Generated Chunk
+
+### Arguments
+| No Arguments |
+|--------------|
+
+### Returns
+| Type   | Name      | Description        |
+|--------|-----------|--------------------|
+| STRING | *No Name* | The Generated Text |
+
+## controller.CommandParser()
+
+### Description
+
+Runs as a Background Thread to keep the Connection Alive and Handle Incoming Commands
 
 ### Arguments
 | No Arguments |

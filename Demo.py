@@ -13,8 +13,9 @@ if initresult == False:
 print("             ", end="\r")
 print("KoboldAPI Demo Connected!\n\nDemo Commands:" +
       "\n'restart' = Restart Story" +
-      "\n'close' = Close & Exit" +
+      "\n'retry' = Redo Last Chunk" +
       "\n'memory' = Edit Memory" +
+      "\n'close' = Close & Exit" +
       "\n")
 
 while True:
@@ -33,14 +34,14 @@ while True:
         controller.SetMemory(memory)
         print("\nMemory has been Set!\n")
         handledCommand = True
-    '''if textin == "retry" or textin == "redo":
+    if textin == "retry" or textin == "redo":
         print("Generating...", end="\r")
         # Receive Retried Output
         output = controller.Retry()
         # Display Retried Output
         print("             ", end="\r")
         print("Output:\n\n" + output + "\n")
-        handledCommand = True'''
+        handledCommand = True
     if textin == "quit" or textin == "close" or textin == "exit":
         print("\nClosing...", end="")
         exit()

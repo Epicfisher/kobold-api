@@ -39,16 +39,16 @@ class Controller:
         r = requests.post(self.url, data='42["message",{"cmd":"memory","data":""}]')
         r = requests.post(self.url, data='42["message",{"cmd":"submit","actionmode":0,"data":"' + memory.replace('"', '\\"').replace("\n", "\\n") + '"}]')
 
-    '''def Retry(self):
-        
-        driver.execute_script("api_instance.send({'cmd': 'retry', 'data': ''});")
-        output = self.GetOutput().encode().decode("unicode-escape")
-        self.lastOutput = output
-        if not output.endswith("\n") and not output.endswith(" "):
-            self.addSpaceBefore = True
-        return output'''
+    def Retry(self):
+        global inputs
 
-    def GetOutput(self):
+        self.chunks.pop()
+        self.chunks.pop()
+        self.inputs = self.inputs - 1
+        r = requests.post(self.url, data='42["message",{"cmd":"retry","data":""}]')
+        return self.GetOutput()
+
+    def CommandParser(self):
         global ready
         
         if self.debug:
@@ -80,38 +80,6 @@ class Controller:
                         if self.debug:
                             print("KOBOLDAPI DEBUG: Ready with New Chunks!")
             r = requests.post(self.url, data="3") # Keep-Alive Request
-
-    '''
-    def GetOutputOld(self):
-        global firstChunk
-
-        valid_responses = 0
-
-        while True:
-            for entry in driver.get_log('browser'):
-                output = str(entry)
-                if self.debug:
-                    print("KOBOLDAPI DEBUG: Received Initial Console Output: '" + output + "'")
-                output = output.replace('\\u005c', '\\u005c\\u005c')
-                output = str(output).encode().decode("unicode-escape")
-                if 'chunk' in output:
-                    try:
-                        output = output[output.index('>')+1:].encode().decode("unicode-escape")
-                        output = output.replace('<br/>', '\n')
-                        starting_chunk = output[:output.index('<')]
-                        if self.debug:
-                            print("KOBOLDAPI DEBUG: '" + output + "'")
-                            print("KOBOLDAPI DEBUG: '" + self.firstChunk.replace('\n', '\\n') + " | " + starting_chunk.replace('\n', '\\n') + "'")
-                        if self.firstChunk.replace('\n', '\\n') == starting_chunk.replace('\n', '\\n'):
-                            output = output[:output.rindex('</chunk>')]
-                            output = re.sub(self.cleaner, '', output)
-                            valid_responses += 1
-                            #if valid_responses == 2:
-                            return output
-                    except:
-                        pass
-            time.sleep(1)
-    '''
 
     def Initialise(self, _url, _debug=False, _reset_after_input=False):
         global url
@@ -161,7 +129,7 @@ class Controller:
         self.ResetStory()
 
         # Begin Output Loop Thread
-        t = threading.Thread(target=self.GetOutput)
+        t = threading.Thread(target=self.CommandParser)
         t.daemon = True
         t.start()
 
@@ -182,9 +150,13 @@ class Controller:
 
         r = requests.post(self.url, data=gen_cmd.encode('utf-8'), headers={'Content-type': 'text/plain; charset=utf-8'})
 
-        output = ""
-        if len(self.chunks) > 0:
+        if len(textin) > 0 and len(self.chunks) > 0:
             self.chunks.append(textin.replace("\\n", "\n"))
+
+        return self.GetOutput(textin, new_only)
+
+    def GetOutput(self, textin="", new_only=False):
+        output = ""
         while True:
             if self.ready == True:
                 for chunk in self.chunks:
