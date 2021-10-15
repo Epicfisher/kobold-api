@@ -105,7 +105,7 @@ Clears the AI's Memory of the Current Text
 | No Returns |
 |------------|
 
-## controller.SetMemory()
+## controller.SetMemory(memory)
 
 ### Description
 
