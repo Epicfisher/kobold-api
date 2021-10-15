@@ -78,7 +78,7 @@ Closes & Cleans Up the API
 
 ### Description
 
-Generates Text from the AI using a given Input Text, and returns the Generated Output Text
+Generates Text from the AI using a given Input Text. Calls "controller.GetOutput()" Afterwards to Return the Generated Output Text
 
 ### Arguments
 | Type   | Name               | Description                           |
@@ -139,7 +139,7 @@ Set the AI's Memory to the Given Text
 
 ### Description
 
-Tells the AI to Retry it's Last Generated Chunk
+Tells the AI to Retry it's Last Generated Chunk. Calls "controller.GetOutput()" Afterwards to Return the Generated Output Text
 
 ### Arguments
 | No Arguments |
