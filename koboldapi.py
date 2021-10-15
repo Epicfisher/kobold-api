@@ -54,7 +54,7 @@ class Controller:
             r = requests.get(self.url) # Request Data
             r.encoding = 'utf-8'
             #output = str(r.content).encode('utf-8', 'surrogatepass').decode('unicode-escape') # Get Output
-            output = str(r.content).encode('ascii').decode('unicode-escape').encode('utf-16', 'surrogatepass').decode('utf-16') # Get Output
+            output = str(r.content).encode('utf-8').decode('unicode-escape').encode('utf-16', 'surrogatepass').decode('utf-16') # Get Output
             if not output == "b'2'": # Ignore Keep-Alive Acknowledgement Outputs
                 if self.debug:
                     print("KOBOLDAPI DEBUG: Received Initial Output: '" + output + "'")
@@ -189,7 +189,7 @@ class Controller:
                 break
         #output = self.GetOutput().encode().decode("unicode-escape")
         #output = ""
-        output = output.encode('ascii').decode('unicode-escape').encode('utf-16', 'surrogatepass').decode('utf-16')
+        output = output.encode('utf-8').decode('unicode-escape').encode('utf-16', 'surrogatepass').decode('utf-16')
 
         if self.reset_after_input:
             self.ResetStory()
