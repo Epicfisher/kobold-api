@@ -37,7 +37,7 @@ class Controller:
 
     def SetMemory(self, memory):
         r = requests.post(self.url, data='42["message",{"cmd":"memory","data":""}]')
-        r = requests.post(self.url, data='42["message",{"cmd":"submit","actionmode":0,"data":"' + memory + '"}]')
+        r = requests.post(self.url, data='42["message",{"cmd":"submit","actionmode":0,"data":"' + memory.replace('"', '\\"').replace("\n", "\\n") + '"}]')
 
     '''def Retry(self):
         
