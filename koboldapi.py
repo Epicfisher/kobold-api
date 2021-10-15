@@ -52,7 +52,9 @@ class Controller:
 
         while True:
             r = requests.get(self.url) # Request Data
-            output = str(r.content) # Get Output
+            r.encoding = 'utf-8'
+            #output = str(r.content).encode('utf-8', 'surrogatepass').decode('unicode-escape') # Get Output
+            output = str(r.content).encode('ascii').decode('unicode-escape').encode('utf-16', 'surrogatepass').decode('utf-16') # Get Output
             if not output == "b'2'": # Ignore Keep-Alive Acknowledgement Outputs
                 if self.debug:
                     print("KOBOLDAPI DEBUG: Received Initial Output: '" + output + "'")
@@ -174,7 +176,7 @@ class Controller:
         if self.debug:
             print("KOBOLDAPI DEBUG: URL: " + self.url + " Payload: " + gen_cmd)
 
-        r = requests.post(self.url, data=gen_cmd)
+        r = requests.post(self.url, data=gen_cmd.encode('utf-8'), headers={'Content-type': 'text/plain; charset=utf-8'})
 
         output = ""
         if len(self.chunks) > 0:
@@ -187,6 +189,7 @@ class Controller:
                 break
         #output = self.GetOutput().encode().decode("unicode-escape")
         #output = ""
+        output = output.encode('ascii').decode('unicode-escape').encode('utf-16', 'surrogatepass').decode('utf-16')
 
         if self.reset_after_input:
             self.ResetStory()
