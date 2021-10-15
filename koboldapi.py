@@ -57,21 +57,22 @@ class Controller:
                 if self.debug:
                     print("KOBOLDAPI DEBUG: Received Initial Output: '" + output + "'")
                 #while 'cmd' in output:
-                output = output[output.index('"cmd":"')+7:]
-                cmd = output[:output.index('"')]
-                #if cmd == 'connected':
-                    #break
-                if (cmd == 'updatescreen' or cmd == 'updatechunk') and not 'generating story' in output:
-                    while '<chunk' in output:
-                        output = output[output.index('<chunk')+6:]
-                        output = output[output.index('>')+1:]
-                        chunk = output[:output.index('</chunk>')]
-                        chunk = html.unescape(chunk)
-                        chunk = chunk.replace('<br/>', '\n')
-                        self.chunks.append(chunk)
-                    self.ready = True
-                    if self.debug:
-                        print("KOBOLDAPI DEBUG: Ready with New Chunks!")
+                if 'cmd' in output:
+                    output = output[output.index('"cmd":"')+7:]
+                    cmd = output[:output.index('"')]
+                    #if cmd == 'connected':
+                        #break
+                    if (cmd == 'updatescreen' or cmd == 'updatechunk') and not 'generating story' in output:
+                        while '<chunk' in output:
+                            output = output[output.index('<chunk')+6:]
+                            output = output[output.index('>')+1:]
+                            chunk = output[:output.index('</chunk>')]
+                            chunk = html.unescape(chunk)
+                            chunk = chunk.replace('<br/>', '\n')
+                            self.chunks.append(chunk)
+                        self.ready = True
+                        if self.debug:
+                            print("KOBOLDAPI DEBUG: Ready with New Chunks!")
             r = requests.post(self.url, data="3") # Keep-Alive Request
 
     '''
@@ -186,15 +187,15 @@ class Controller:
                 break
         #output = self.GetOutput().encode().decode("unicode-escape")
         #output = ""
-        
-        if not output.endswith("\n") and not output.endswith(" "):
-            self.addSpaceBefore = True
 
         if self.reset_after_input:
             self.ResetStory()
 
         if new_only:
             output = textin.replace("\\n", "\n") + self.chunks[len(self.chunks)]
+
+        if not output.endswith("\n") and not output.endswith(" "):
+            self.addSpaceBefore = True
 
         self.inputs = self.inputs + 1
 
