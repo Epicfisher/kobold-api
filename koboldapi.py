@@ -19,6 +19,7 @@ class Controller:
     inputs = 0
     ready = False
     addSpaceBefore = False
+    gameStarted = False
 
     # Functions
     def ResetStory(self):
@@ -62,15 +63,24 @@ class Controller:
             if not output == "b'2'": # Ignore Keep-Alive Acknowledgement Outputs
                 if self.debug:
                     print("KOBOLDAPI DEBUG: Received Initial Output: '" + output + "'")
+                if '"gamestarted":true' in output:
+                    self.gameStarted = True
+                    if self.debug:
+                        print("KOBOLDAPI DEBUG: Game Started!")
+                if '"gamestarted":false' in output:
+                    self.gameStarted = False
+                    if self.debug:
+                        print("KOBOLDAPI DEBUG: Game Ended!")
                 while 'cmd' in output:
                 #if 'cmd' in output:
                     output = output[output.index('"cmd":"')+7:]
                     cmd = output[:output.index('"')]
                     if self.debug:
                         print("KOBOLDAPI DEBUG: Received Command: '" + cmd + "'")
+
                     #if cmd == 'connected':
                         #break
-                    if (cmd == 'updatescreen' or cmd == 'updatechunk') and not 'generating story' in output and '"gamestarted":true' in output:
+                    if (cmd == 'updatescreen' or cmd == 'updatechunk') and not 'generating story' in output and self.gameStarted and '"data":"ready"' in output:
                         while '<chunk' in output:
                             output = output[output.index('<chunk')+6:]
                             output = output[output.index('>')+1:]
