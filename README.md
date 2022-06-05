@@ -1,13 +1,12 @@
 # KoboldAPI
 A Work-In-Progress Python Module for Interfacing with [KoboldAI](https://github.com/KoboldAI/KoboldAI-Client)'s Console API.
 
-To test this for Free (with certain restrictions) you can use [Google Colab.](https://colab.research.google.com/drive/1pG9Gz9PrqklNBESPNaXvfctMVnvwf_Q8)
+To test this for Free (with certain restrictions) you can use [Google Colab.](https://henk.tech/colabkobold13b)
 
 ## Features
-```
+
 * Connects to a KoboldAI Web Interface
 * Sends & Receives Text from the AI
-```
 
 ## Setup
 
