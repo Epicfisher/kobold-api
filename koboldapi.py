@@ -66,7 +66,8 @@ class Controller:
                 #if 'cmd' in output:
                     output = output[output.index('"cmd":"')+7:]
                     cmd = output[:output.index('"')]
-                    print("KOBOLDAPI DEBUG: Received Command: '" + cmd + "'")
+                    if self.debug:
+                        print("KOBOLDAPI DEBUG: Received Command: '" + cmd + "'")
                     #if cmd == 'connected':
                         #break
                     if (cmd == 'updatescreen' or cmd == 'updatechunk') and not 'generating story' in output and '"gamestarted":true' in output:
