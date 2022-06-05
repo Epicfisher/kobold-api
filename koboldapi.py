@@ -96,7 +96,7 @@ class Controller:
         if self.debug:
             print("KOBOLDAPI DEBUG: Debug Mode is Enabled!")
             
-        if not self.url.startswith("https://"):
+        if not self.url.startswith("https://") and not self.url.startswith("http://"):
             self.url = "https://" + self.url
 
         try:
