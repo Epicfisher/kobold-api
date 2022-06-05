@@ -62,13 +62,14 @@ class Controller:
             if not output == "b'2'": # Ignore Keep-Alive Acknowledgement Outputs
                 if self.debug:
                     print("KOBOLDAPI DEBUG: Received Initial Output: '" + output + "'")
-                #while 'cmd' in output:
-                if 'cmd' in output:
+                while 'cmd' in output:
+                #if 'cmd' in output:
                     output = output[output.index('"cmd":"')+7:]
                     cmd = output[:output.index('"')]
+                    print("KOBOLDAPI DEBUG: Received Command: '" + cmd + "'")
                     #if cmd == 'connected':
                         #break
-                    if (cmd == 'updatescreen' or cmd == 'updatechunk') and not 'generating story' in output:
+                    if (cmd == 'updatescreen' or cmd == 'updatechunk') and not 'generating story' in output and '"gamestarted":true' in output:
                         while '<chunk' in output:
                             output = output[output.index('<chunk')+6:]
                             output = output[output.index('>')+1:]
