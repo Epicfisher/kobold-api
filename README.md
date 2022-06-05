@@ -29,6 +29,8 @@ Create an API Controller with `controller = koboldapi.Controller()`
 
 See the supplied `Demo.py` for an example implementation
 
+`DemoDebug.py` runs the Demo in Debug Mode for additional useful runtime information
+
 ---
 
 # API Classes
